@@ -24,6 +24,33 @@ Das Ziel dieses Projekts war die Entwicklung einer einfachen Stoppuhr mit einem 
 | **2. Pin** | **GND** | Masse |
 
 ### Code
+#### Testcode für Anzeige des Displays
+```cpp
+#include <Wire.h>
+#include <LiquidCrystal_I2C.h>
+
+#define LCD_ADDR 0x27  // Bestätigte I2C-Adresse
+
+LiquidCrystal_I2C lcd(LCD_ADDR, 16, 2);
+
+void setup() {
+    Serial.begin(9600);
+    Serial.println("LCD Test gestartet...");
+
+    delay(2000);  // 2 Sekunden warten
+    lcd.begin(16, 2);
+    lcd.backlight();  
+    lcd.clear();  
+
+    lcd.setCursor(0, 0);
+    lcd.print("LCD Funktioniert!");
+}
+
+void loop() {
+}
+```
+
+#### Code für die Stoppuhr
 ```cpp
 #include <Wire.h>
 #include <LiquidCrystal_I2C.h>

@@ -29,24 +29,18 @@ Das Ziel dieses Projekts war die Entwicklung einer einfachen Stoppuhr mit einem 
 #include <Wire.h>
 #include <LiquidCrystal_I2C.h>
 
-#define LCD_ADDR 0x27  // Bestätigte I2C-Adresse
-
-LiquidCrystal_I2C lcd(LCD_ADDR, 16, 2);
+LiquidCrystal_I2C lcd(0x27, 16, 2);
 
 void setup() {
-    Serial.begin(9600);
-    Serial.println("LCD Test gestartet...");
-
-    delay(2000);  // 2 Sekunden warten
-    lcd.begin(16, 2);
-    lcd.backlight();  
-    lcd.clear();  
-
-    lcd.setCursor(0, 0);
-    lcd.print("LCD Funktioniert!");
+lcd.init();
+lcd.backlight();
 }
 
 void loop() {
+lcd.setCursor(0, 0);
+lcd.print("Chiara");
+lcd.setCursor(0, 1);
+lcd.print("Bachmann");
 }
 ```
 
@@ -55,31 +49,29 @@ void loop() {
 #include <Wire.h>
 #include <LiquidCrystal_I2C.h>
 
-#define LCD_ADDR 0x27  // Falls 0x27 nicht funktioniert, probiere 0x3F
-
-LiquidCrystal_I2C lcd(LCD_ADDR, 16, 2);  // LCD 16x2 erstellen
+LiquidCrystal_I2C lcd(0x27, 16, 2);
 
 const int buttonPin = 2;
 bool running = false;
 unsigned long startTime = 0;
 unsigned long elapsedTime = 0;
+bool lastButtonState = HIGH;  // Speichert den letzten Zustand des Tasters
+unsigned long buttonPressTime = 0;  // Speichert den Zeitpunkt, wann der Knopf gedrückt wurde
 
 void setup() {
     pinMode(buttonPin, INPUT_PULLUP);
-    Serial.begin(9600);
-    
-    lcd.begin(16, 2);  // Hier die richtige Anzahl Parameter übergeben!
-    lcd.backlight();  // Hintergrundbeleuchtung einschalten
-    
+    lcd.init();
+    lcd.backlight();
     lcd.setCursor(0, 0);
     lcd.print("Stoppuhr bereit!");
 }
 
 void loop() {
-    if (digitalRead(buttonPin) == LOW) {  // Knopf gedrückt
-        delay(200);  // Entprellung
-        while (digitalRead(buttonPin) == LOW);  // Warten, bis losgelassen
-        
+    bool buttonState = digitalRead(buttonPin);  // Knopfzustand lesen
+
+    if (buttonState == LOW && lastButtonState == HIGH) {  // Knopf wird gedrückt
+        buttonPressTime = millis();  // Speichert die Zeit des Tastendrucks
+
         if (!running) {
             startTime = millis() - elapsedTime;  // Falls Pause, setze die Zeit korrekt
             running = true;
@@ -88,6 +80,15 @@ void loop() {
             running = false;
         }
     }
+
+    if (buttonState == LOW && millis() - buttonPressTime >= 2000) {  // Knopf wird 2 Sekunden gedrückt gehalten
+        running = false;  // Stoppuhr stoppen
+        elapsedTime = 0;  // Zeit auf 0 zurücksetzen
+        lcd.setCursor(0, 1);
+        lcd.print("Zeit: 0:00.00  ");  // Anzeige zurücksetzen
+    }
+
+    lastButtonState = buttonState;  // Speichert den aktuellen Zustand für den nächsten Loop
 
     if (running) {
         elapsedTime = millis() - startTime;
@@ -101,17 +102,28 @@ void loop() {
     lcd.print("Zeit: ");
     lcd.print(minutes);
     lcd.print(":");
-    if (seconds < 10) lcd.print("0");  // Führende Null für Sekunden
+    if (seconds < 10) lcd.print("0");
     lcd.print(seconds);
     lcd.print(".");
-    if (milliseconds < 10) lcd.print("0");  // Führende Null für Millisekunden
+    if (milliseconds < 10) lcd.print("0");
     lcd.print(milliseconds);
 }
 ```
+#### Funktionalität
+Der Code steuert die Stoppuhr basierend auf Knopf-Interaktionen:
+- Kurzes Drücken: Startet oder stoppt die Zeit.
+- Langes Drücken (2 Sekunden): Setzt die Zeit auf 0 zurück.
+- Die Zeit wird im Format Minuten:Sekunden.Millisekunden auf dem LCD ausgegeben.
+
+#### Verwendete Bibliotheken & ihre Funktionen
+
+| **Bibliothek** | **Funktion** |
+|---------------|-------------|
+| `Wire.h` | Ermöglicht die Kommunikation über den **I2C-Bus** (wird für das LCD benötigt). |
+| `LiquidCrystal_I2C.h` | Steuert das **LCD 1602 mit I2C-Adapter** und erlaubt das Anzeigen von Text. |
+
 ![IMG_3820](https://github.com/user-attachments/assets/e2a04965-98d8-48d0-af25-18f7268cd66f)
 
 ### Probleme und Herausforderungen
 - Das LCD-Display zeigte anfangs nur Kästchen, da die Hardware defekt war. Nach dem Austausch funktionierte es.
-- Die I2C-Adresse musste zuerst mit einem Scanner-Code ermittelt werden (0x27 oder 0x3F).
-- Die Verkabelung musste mehrfach überprüft und korrigiert werden, um eine fehlerfreie Kommunikation zwischen dem LCD und dem Arduino zu gewährleisten
 

@@ -55,7 +55,7 @@ const int buttonPin = 2;
 
 void setup() {
     pinMode(ledPin, OUTPUT);
-    pinMode(buttonPin, INPUT_PULLUP); // Interner Pull-Up Widerstand
+    pinMode(buttonPin, INPUT_PULLUP); // Interner Pull-Up Widerstand wird aktiviert
 }
 
 void loop() {
@@ -146,3 +146,47 @@ void loop() {
     }
 }
 ```
+# 4.8 Fade-In/Fade-Out, per Interrupt initiiert & entprellt
+```cpp
+const int ledPin = 5;
+const int buttonPin = 2;
+volatile bool buttonPressed = false;
+bool fadeIn = true;
+
+void IRAM_ATTR InterruptHandler() {
+    buttonPressed = true;
+}
+
+void fadeLED(bool up) {
+    int step = up ? 5 : -5;
+    for (int i = (up ? 0 : 255); (up ? i <= 255 : i >= 0); i += step) {
+        analogWrite(ledPin, i);
+        delay(10);
+    }
+}
+
+void setup() {
+    pinMode(ledPin, OUTPUT);
+    pinMode(buttonPin, INPUT_PULLUP);
+    attachInterrupt(digitalPinToInterrupt(buttonPin), InterruptHandler, FALLING);
+}
+
+void loop() {
+    if (buttonPressed) {
+        buttonPressed = false;
+        fadeLED(fadeIn);
+        fadeIn = !fadeIn;
+    }
+}
+```
+
+# 5.1 Unterschied zwischen Präprozessor #define und C++-Variable
+#### Unterschiede:
+| Aspekt            | `#define`                 | `const bool`            |
+|-------------------|-------------------------|-------------------------|
+| **Speicherverbrauch** | Kein Speicher belegt, reine Textersetzung | Belegt Speicher (1 Byte für `bool`) |
+| **Datentypprüfung**  | Keine, reine Textersetzung | Compiler prüft Datentypen |
+| **Debugging**       | Keine Fehlerprüfung durch Compiler | Compiler erkennt falsche Typen |
+| **Sichtbarkeit**    | Gilt für gesamte Datei (global) | Kann auf Block-/Dateiebene begrenzt werden |
+| **Änderung zur Laufzeit** | Nein | Ja, aber nur in Ausnahmefällen |
+

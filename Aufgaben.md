@@ -190,3 +190,62 @@ void loop() {
 | **Sichtbarkeit**    | Gilt für gesamte Datei (global) | Kann auf Block-/Dateiebene begrenzt werden |
 | **Änderung zur Laufzeit** | Nein | Ja, aber nur in Ausnahmefällen |
 
+#### Präprozessor-Variante (#define):
+#define DEBUG
+```cpp
+void setup() {
+    #ifdef DEBUG
+        Serial.begin(9600);
+        while (!Serial);
+    #endif
+}
+```
+#### C++-Variable:
+```cpp
+const bool DEBUG = true;
+
+void setup() {
+    if (DEBUG) {
+        Serial.begin(9600);
+        while (!Serial);
+    }
+}
+```
+# 5.2 (Makros für Mathe-Funktionen)
+```cpp
+#define MAX(x, y) ((x > y) ? x : y)
+#define MIN(x, y) ((x < y) ? x : y)
+#define ABS(x) ((x > 0) ? x : -x)
+
+void setup() {
+    Serial.begin(9600);
+    
+    int a = -10, b = 25;
+    Serial.print("Max: "); Serial.println(MAX(a, b));
+    Serial.print("Min: "); Serial.println(MIN(a, b));
+    Serial.print("Abs: "); Serial.println(ABS(a));
+}
+
+void loop() {}
+```
+# 5.3 (Makros für Debugging mit DEBUG_PRINT)
+```cpp
+#define DEBUG
+#define DEBUG_PREFIX "DEBUG: "
+
+#ifdef DEBUG
+    #define DEBUG_PRINT(msg) Serial.println(DEBUG_PREFIX msg)
+#else
+    #define DEBUG_PRINT(msg) {}
+#endif
+
+void setup() {
+    Serial.begin(9600);
+    DEBUG_PRINT("Programm gestartet.");
+}
+
+void loop() {
+    DEBUG_PRINT("Loop läuft...");
+    delay(1000);
+}
+```

@@ -1,15 +1,18 @@
 # Stoppuhr
-### Ziel
+## Ziel
 Das Ziel dieses Projekts war die Entwicklung einer einfachen Stoppuhr mit einem LCD-Display und einem Taster, um die Zeit zu starten und zu stoppen. Die gemessene Zeit wird auf dem Display angezeigt.
 
-### Hardware
-#### Benötigte Hardware
+![IMG_3820](https://github.com/user-attachments/assets/e2a04965-98d8-48d0-af25-18f7268cd66f)
+Abbildung: Mein fertiges Projekt
+
+## Benötigte Hardware
 - Arduino Uno (Funduino)
 - LCD 1602 mit I2C-Adapter
 - Taster (für Start/Stopp-Funktion)
 - Jumper-Kabel zur Verbindung der Komponenten
 
-#### Verkabelung des LCD-Displays
+## Umsetzung
+### Verkabelung des LCD-Displays
 | LCD-Pin (I2C-Modul) | Arduino-Pin | Funktion |
 |-----------------|--------------|----------------------|
 | **VCC** | **5V** | Stromversorgung |
@@ -17,11 +20,18 @@ Das Ziel dieses Projekts war die Entwicklung einer einfachen Stoppuhr mit einem 
 | **SDA** | **A4** | I2C-Datenleitung |
 | **SCL** | **A5** | I2C-Taktleitung |
 
-#### Verkabelung des Tasters
+### Verkabelung des Tasters
 | Taster-Pin | Arduino-Pin | Funktion |
 |------------|--------------|----------------------|
 | **1. Pin** | **D2** | Digitaleingang für Start/Stopp |
 | **2. Pin** | **GND** | Masse |
+
+### Verwendete Bibliotheken & ihre Funktionen
+
+| **Bibliothek** | **Funktion** |
+|---------------|-------------|
+| `Wire.h` | Ermöglicht die Kommunikation über den **I2C-Bus** (wird für das LCD benötigt). |
+| `LiquidCrystal_I2C.h` | Steuert das **LCD 1602 mit I2C-Adapter** und erlaubt das Anzeigen von Text. |
 
 ### Code
 #### Testcode für Anzeige des Displays
@@ -115,15 +125,10 @@ Der Code steuert die Stoppuhr basierend auf Knopf-Interaktionen:
 - Langes Drücken (2 Sekunden): Setzt die Zeit auf 0 zurück.
 - Die Zeit wird im Format Minuten:Sekunden.Millisekunden auf dem LCD ausgegeben.
 
-#### Verwendete Bibliotheken & ihre Funktionen
-
-| **Bibliothek** | **Funktion** |
-|---------------|-------------|
-| `Wire.h` | Ermöglicht die Kommunikation über den **I2C-Bus** (wird für das LCD benötigt). |
-| `LiquidCrystal_I2C.h` | Steuert das **LCD 1602 mit I2C-Adapter** und erlaubt das Anzeigen von Text. |
-
-![IMG_3820](https://github.com/user-attachments/assets/e2a04965-98d8-48d0-af25-18f7268cd66f)
-
 ### Probleme und Herausforderungen
 - Das LCD-Display zeigte anfangs nur Kästchen, da die Hardware defekt war. Nach dem Austausch funktionierte es.
 
+### Benutzte Quellen
+- "Arduino lernen" Arbeitsheft
+- https://hartmut-waller.info/arduinoblog/stoppuhr-lcd/
+- https://funduino.de/wp-content/uploads/2021/01/Stoppuhr.pdf

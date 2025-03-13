@@ -26,7 +26,7 @@ Abbildung: Mein fertiges Projekt
 | **1. Pin** | **D2** | Digitaleingang für Start/Stopp |
 | **2. Pin** | **GND** | Masse |
 
-### Verwendete Bibliotheken & ihre Funktionen
+### Verwendete Bibliotheken und ihre Funktionen
 
 | **Bibliothek** | **Funktion** |
 |---------------|-------------|

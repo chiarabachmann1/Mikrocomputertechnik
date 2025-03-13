@@ -1,4 +1,5 @@
-# 4.1 Timing
+# Aufgaben aus dem Script
+## 4.1 Timing
 ### Wie ist die Zahl in der Funktion delay() zu verstehen?
 Die Zahl in delay(x) gibt an, wie viele Millisekunden das Programm an dieser Stelle pausiert. Beispiel: delay(1000); bedeutet, dass das Programm für 1 Sekunde (1000 ms) angehalten wird.
 
@@ -21,7 +22,7 @@ unsigned long duration = millis() - startTime;
 Serial.println(duration / 1000.0); // Durchschnittliche Laufzeit pro loop()
 ```
 
-# 4.2 Dynamischer Blinker
+## 4.2 Dynamischer Blinker
 Die LED bleibt zuerst lange aus, dann ändert sich das Verhältnis bis zum Gegenteil.
 ```cpp
 const int ledPin = 5;
@@ -48,7 +49,7 @@ void loop() {
 }
 ```
 
-# 4.3 Schaltung mit pull-up Widerstand
+## 4.3 Schaltung mit pull-up Widerstand
 ```cpp
 const int ledPin = 5;
 const int buttonPin = 2;
@@ -64,11 +65,11 @@ void loop() {
 }
 ```
 
-# 4.4 Sind alle Pins Pull-Up fähig?
+## 4.4 Sind alle Pins Pull-Up fähig?
 - Ja, alle digitalen Pins des Arduino UNO haben einen internen Pull-Up-Widerstand.
 - Nein, es gibt keine internen Pull-Down Widerstände – man muss externe Widerstände verwenden.
 
-# 4.5 Taster zum Ein-/Ausschalten der LED
+## 4.5 Taster zum Ein-/Ausschalten der LED
 ```cpp
 const int ledPin = 5;
 const int buttonPin = 2;
@@ -93,7 +94,7 @@ void loop() {
 }
 ```
 
-# 4.6 Fade-in, Fade-out
+## 4.6 Fade-in, Fade-out
 ```cpp
 const int ledPin = 5;
 const int buttonPin = 2;
@@ -118,7 +119,7 @@ void loop() {
 }
 ```
 
-# 4.7 Interrupt mit Fade-in/Fade-out
+## 4.7 Interrupt mit Fade-in/Fade-out
 ```cpp
 const int ledPin = 5;
 const int buttonPin = 2;
@@ -180,7 +181,7 @@ void loop() {
 }
 ```
 
-# 5.1 Unterschied zwischen Präprozessor #define und C++-Variable
+## 5.1 Unterschied zwischen Präprozessor #define und C++-Variable
 #### Unterschiede:
 | Aspekt            | `#define`                 | `const bool`            |
 |-------------------|-------------------------|-------------------------|
@@ -211,7 +212,7 @@ void setup() {
     }
 }
 ```
-# 5.2 (Makros für Mathe-Funktionen)
+## 5.2 (Makros für Mathe-Funktionen)
 ```cpp
 #define MAX(x, y) ((x > y) ? x : y)
 #define MIN(x, y) ((x < y) ? x : y)
@@ -228,7 +229,7 @@ void setup() {
 
 void loop() {}
 ```
-# 5.3 (Makros für Debugging mit DEBUG_PRINT)
+## 5.3 (Makros für Debugging mit DEBUG_PRINT)
 ```cpp
 #define DEBUG
 #define DEBUG_PREFIX "DEBUG: "

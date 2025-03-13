@@ -126,7 +126,7 @@ Der Code steuert die Stoppuhr basierend auf Knopf-Interaktionen:
 - Die Zeit wird im Format Minuten:Sekunden.Millisekunden auf dem LCD ausgegeben.
 
 ### Probleme und Herausforderungen
-- Das LCD-Display zeigte anfangs nur Kästchen, da die Hardware defekt war. Nach dem Austausch funktionierte es.
+Als ich mit dem Projekt begonnen habe, testete ich zuerst die Funktion des LCD-Displays mit dem Testcode. Das Display leuchtete zwar, zeigte aber keine Nachricht an. Deswegen ging ein ganzer Nachmittag verloren, da ich davon ausging es müsste am Code oder an der Verkabelung liegen. Als ich das Display ausgetauscht habe, funktionierte die Anzeige einwandfrei.
 
 ### Benutzte Quellen
 - "Arduino lernen" Arbeitsheft
